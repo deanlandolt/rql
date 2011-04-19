@@ -1,13 +1,13 @@
-var assert = require("assert"),
-    Query = require("../lib/query").Query,
-    parseQuery = require("../lib/parser").parseQuery;
+var assert = require("assert");
+var Query = require("../lib/query").Query;
+var parseQuery = require("../lib/parser").parseQuery;
+
 exports.testJSArray = require("./js-array");
 
 exports.testBehavior = function() {
-    //assert.error(parseQuery(), "parseQuery requires a string");
     assert.ok(parseQuery("") instanceof Query, "should inherit from Query");
     assert.ok(parseQuery("a=b") instanceof Query, "should inherit from Query");
-    //assert.error(parseQuery("?a=b"), "cannot begin with a ?");
+    assert.throws(function() { parseQuery("?a=b") }, "cannot begin with a ?");
 };
 
 var queryPairs = {
@@ -167,7 +167,7 @@ exports.testStringification = function() {
     //assert.deepEqual(parsed, {name: 'and', args: [{name: 'eq', args: ['id1', /^abc\//]}]});
     assert.ok(Query().eq('_1',/GGG(EE|FF)/i)+'' === 'eq(_1,re:GGG%28EE%7CFF%29)');
     parsed = parseQuery('eq(_1,re:GGG%28EE%7CFF%29)');
-    console.log(parsed.args[0].args[1].toString() === /GGG(EE|FF)/i.toString());
+    //console.log(parsed.args[0].args[1].toString() === /GGG(EE|FF)/i.toString());
     //assert.ok(Query().eq('_1',/GGG(EE|FF)/)+'' === 'eq(_1,RE:GGG%28EE%7CFF%29)');
     // string to array and back
     var str = 'somefunc(and(1),(a,b),(10,(10,1)),(a,b.c))';
@@ -178,5 +178,4 @@ exports.testStringification = function() {
     assert.deepEqual(parseQuery(Query().eq(name,1)+'').args[0].args[0], name);
 };
 
-if (require.main === module)
-    require("patr/runner").run(exports);
+if (require.main === module) require("patr/lib/test").run(exports);

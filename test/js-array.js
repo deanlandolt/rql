@@ -1,6 +1,6 @@
-var assert = require("assert"),
-	Query = require("../lib/query").Query,
-    executeQuery = require("../lib/js-array").executeQuery;
+var assert = require("assert");
+var Query = require("../lib/query").Query;
+var executeQuery = require("../lib/js-array").executeQuery;
 
 var data = [
 	{
@@ -45,5 +45,4 @@ exports.testFiltering1 = function() {
 	assert.deepEqual(executeQuery("excludes(path.1,7)&sort()", {}, data), [data[0]]); // 7 found in second
 };
 
-if (require.main === module)
-    require("patr/runner").run(exports);
+if (require.main === module) require("patr/lib/test").run(exports);
