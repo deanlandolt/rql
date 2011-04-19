@@ -37,8 +37,7 @@
     "patr": ">=0.2.1"
   },
   "directories": {
-    "lib": "./lib",
-    "test": "./tests"
+    "lib": "./lib"
   },
   "main": "lib/query.js",
   "scripts": {
