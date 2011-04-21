@@ -13,4 +13,3 @@ exports.testMain = function() {
 
 
 if (require.main === module) require("patr/lib/test").run(exports);
-
