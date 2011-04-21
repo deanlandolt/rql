@@ -39,9 +39,9 @@
   "directories": {
     "lib": "./lib"
   },
-  "main": "lib/query.js",
+  "main": "lib/index",
   "scripts": {
-    "test": "node tests/query.js"
+    "test": "node tests/index.js"
   },
   "icon": "http://packages.dojofoundation.org/images/persvr.png"
 }
