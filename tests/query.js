@@ -2,8 +2,6 @@ var assert = require("assert");
 var Query = require("../lib/query").Query;
 var parseQuery = require("../lib/parser").parseQuery;
 
-exports.testJSArray = require("./js-array");
-
 exports.testBehavior = function() {
     assert.ok(parseQuery("") instanceof Query, "should inherit from Query");
     assert.ok(parseQuery("a=b") instanceof Query, "should inherit from Query");
