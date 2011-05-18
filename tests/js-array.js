@@ -129,7 +129,8 @@ exports.testNonArrayExecution = function() {
 	assertQuery("eq(foo,bar)", data, data);
 	assertQuery("eq(foo,baz)", data);
 	assertQuery("eq(bar,baz)", data);
-	assertQuery("values(list)", data, data.list, {log:true});
+	assertQuery("values(list)", data, data.list);
+	assertQuery("select(list)", data, {list: data.list});
 
 	// test scalars directly
 	assertQuery("eq(foo)", "foo", "foo");
@@ -139,6 +140,56 @@ exports.testNonArrayExecution = function() {
 	assertQuery("ge(42)", 42, 42);
 	assertQuery("gt(42)", 42);
 
+};
+
+exports.testAssertions = {
+	testScalars: function() {
+		executeQuery("assert(eq(42))", {}, 42);
+		executeQuery("assert(ge(42))", {}, 42);
+		assert.throws(function() { executeQuery("assert(eq(42))", {}, 43) });
+		assert.throws(function() { executeQuery("assert(gt(42))", {}, 42) });
+		executeQuery("assert(eq(foo))", {}, "foo");
+		executeQuery("assert(ge(foo))", {}, "foo");
+		assert.throws(function() { executeQuery("assert(ne(foo))", {}, "foo") });
+		assert.throws(function() { executeQuery("assert(eq(bar))", {}, "foo") });
+	},
+	testObjects: function() {
+		var data = {
+			foo: "bar",
+			answer: 42
+		};
+		//assertQuery("assert(eq(answer,42))", data, data, {log: true});
+		executeQuery("assert(eq(answer,42))", {}, data);
+		executeQuery("assert(eq(foo,bar))", {}, data);
+		executeQuery("assert(eq(foo,bar))", {}, data);
+	},
+	testScalarArrays: function() {
+		var data = [4, 2, 7];
+
+		// sum
+		// mean > 3
+	},
+	testObjectArrays: function() {
+		var data = [{
+			foo: "bar",
+			answer: 42
+		},{
+			foo: "bar",
+			answer: 2
+		},{
+			foo: "baz",
+			bar: ["a", 3, "c"]
+		}];
+
+
+		executeQuery("foo=bar&select(answer)&assert(ge(answer,2))&assert(ne(answer,4))", {}, data);
+		assert.throws(function() { executeQuery("foo=bar&select(answer)&assert(ge(answer,2))&assert(ne(answer,2))", {}, data) });
+		executeQuery("foo=bar&values(answer)&assert(ge(2))", {}, data);
+		executeQuery("foo=baz&count()&assert(eq(1))", {}, data);
+	},
+	testMixedArrays: function() {
+
+	}
 };
 
 if (require.main === module) require("patr/lib/test").run(exports);
